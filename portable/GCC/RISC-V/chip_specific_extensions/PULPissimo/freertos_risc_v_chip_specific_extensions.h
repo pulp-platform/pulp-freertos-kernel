@@ -69,6 +69,9 @@
 #define lpend1 		0x7c5
 #define lpcount1 	0x7c6
 
+
+#ifndef portasmSKIP_ADDITIONAL_REGISTERS /* explicitely disabled ? */
+
 /* Six additional registers to save and restore, as per the #defines above. */
 #define portasmADDITIONAL_CONTEXT_SIZE 6 /* Must be even number on 32-bit cores. */
 
@@ -105,5 +108,19 @@
 	csrw lpcount1, t5
 	addi sp, sp, (portasmADDITIONAL_CONTEXT_SIZE * portWORD_SIZE )/* Remove space added for additional registers. */
 	.endm
+
+#else
+
+#define portasmADDITIONAL_CONTEXT_SIZE 0 /* Must be even number on 32-bit cores. */
+
+.macro portasmSAVE_ADDITIONAL_REGISTERS
+	/* No additional registers to save, so this macro does nothing. */
+	.endm
+
+.macro portasmRESTORE_ADDITIONAL_REGISTERS
+	/* No additional registers to restore, so this macro does nothing. */
+	.endm
+
+#endif
 
 #endif /* __FREERTOS_RISC_V_EXTENSIONS_H__ */

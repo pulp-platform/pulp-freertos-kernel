@@ -149,12 +149,13 @@ freertos_risc_v_trap_handler:
 	store_x x29, 26 * portWORD_SIZE( sp )
 	store_x x30, 27 * portWORD_SIZE( sp )
 	store_x x31, 28 * portWORD_SIZE( sp )
-
 #endif
+	
 	csrr t0, mstatus					/* Required for MPIE bit. */
 	store_x t0, 29 * portWORD_SIZE( sp )
-
+#ifndef portasmSKIP_ADDITIONAL_REGISTERS
 	portasmSAVE_ADDITIONAL_REGISTERS	/* Defined in freertos_risc_v_chip_specific_extensions.h to save any registers unique to the RISC-V implementation. */
+#endif
 
 	load_x  t0, pxCurrentTCB			/* Load pxCurrentTCB. */
 	store_x  sp, 0( t0 )				/* Write sp to first TCB member. */
@@ -256,7 +257,9 @@ processed_source:
 	load_x t0, 0( sp )
 	csrw mepc, t0
 
+#ifndef portasmSKIP_ADDITIONAL_REGISTERS
 	portasmRESTORE_ADDITIONAL_REGISTERS	/* Defined in freertos_risc_v_chip_specific_extensions.h to restore any registers unique to the RISC-V implementation. */
+#endif
 
 	/* Load mstatus with the interrupt enable bits used by the task. */
 	load_x  t0, 29 * portWORD_SIZE( sp )
@@ -315,7 +318,9 @@ xPortStartFirstTask:
 
 	load_x  x1, 0( sp ) /* Note for starting the scheduler the exception return address is used as the function return address. */
 
+#ifndef portasmSKIP_ADDITIONAL_REGISTERS
 	portasmRESTORE_ADDITIONAL_REGISTERS	/* Defined in freertos_risc_v_chip_specific_extensions.h to restore any registers unique to the RISC-V implementation. */
+#endif
 
 	load_x  t0, 29 * portWORD_SIZE( sp )	/* mstatus */
 	addi t0, t0, 0x08						/* Set MIE bit so the first task starts with interrupts enabled - required as returns with ret not eret. */
