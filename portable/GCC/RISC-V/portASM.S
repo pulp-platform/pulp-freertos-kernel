@@ -132,6 +132,7 @@ freertos_risc_v_trap_handler:
 	store_x x13, 10 * portWORD_SIZE( sp )
 	store_x x14, 11 * portWORD_SIZE( sp )
 	store_x x15, 12 * portWORD_SIZE( sp )
+#ifndef __riscv_32e  /* defined by gcc when -march=rv32e */
 	store_x x16, 13 * portWORD_SIZE( sp )
 	store_x x17, 14 * portWORD_SIZE( sp )
 	store_x x18, 15 * portWORD_SIZE( sp )
@@ -149,6 +150,7 @@ freertos_risc_v_trap_handler:
 	store_x x30, 27 * portWORD_SIZE( sp )
 	store_x x31, 28 * portWORD_SIZE( sp )
 
+#endif
 	csrr t0, mstatus					/* Required for MPIE bit. */
 	store_x t0, 29 * portWORD_SIZE( sp )
 
@@ -272,6 +274,7 @@ processed_source:
 	load_x  x13, 10 * portWORD_SIZE( sp )	/* a3 */
 	load_x  x14, 11 * portWORD_SIZE( sp )	/* a4 */
 	load_x  x15, 12 * portWORD_SIZE( sp )	/* a5 */
+#ifndef __riscv_32e  /* defined by gcc when -march=rv32e */
 	load_x  x16, 13 * portWORD_SIZE( sp )	/* a6 */
 	load_x  x17, 14 * portWORD_SIZE( sp )	/* a7 */
 	load_x  x18, 15 * portWORD_SIZE( sp )	/* s2 */
@@ -288,6 +291,7 @@ processed_source:
 	load_x  x29, 26 * portWORD_SIZE( sp )	/* t4 */
 	load_x  x30, 27 * portWORD_SIZE( sp )	/* t5 */
 	load_x  x31, 28 * portWORD_SIZE( sp )	/* t6 */
+#endif
 	addi sp, sp, portCONTEXT_SIZE
 
 	mret
@@ -328,6 +332,7 @@ xPortStartFirstTask:
 	load_x  x13, 10 * portWORD_SIZE( sp )	/* a3 */
 	load_x  x14, 11 * portWORD_SIZE( sp )	/* a4 */
 	load_x  x15, 12 * portWORD_SIZE( sp )	/* a5 */
+#ifndef __riscv_32e  /* defined by gcc when -march=rv32e */
 	load_x  x16, 13 * portWORD_SIZE( sp )	/* a6 */
 	load_x  x17, 14 * portWORD_SIZE( sp )	/* a7 */
 	load_x  x18, 15 * portWORD_SIZE( sp )	/* s2 */
@@ -344,6 +349,7 @@ xPortStartFirstTask:
 	load_x  x29, 26 * portWORD_SIZE( sp )	/* t4 */
 	load_x  x30, 27 * portWORD_SIZE( sp )	/* t5 */
 	load_x  x31, 28 * portWORD_SIZE( sp )	/* t6 */
+#endif
 	addi	sp, sp, portCONTEXT_SIZE
 	ret
 	.endfunc
