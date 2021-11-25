@@ -371,6 +371,7 @@ application_interrupt_handler:
 handle_exception:
     /* a0 contains mcause. */
     li t0, 11                                   /* 11 == environment call. */
+    andi a0, a0, 0x7ff                          /* with the CLIC the lower 12 bits are the exception code and upper bits might be clobbered mpil, mie etc. */	
     bne a0, t0, application_exception_handler   /* Not an M environment call, so some other exception. */
     call vTaskSwitchContext
     j processed_source
