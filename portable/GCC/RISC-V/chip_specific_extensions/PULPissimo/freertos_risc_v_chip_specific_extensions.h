@@ -53,7 +53,7 @@
  */
 
 /*
- * This freertos_risc_v_chip_specific_extensions.h is for use with Pulpino Ri5cy
+ * This freertos_risc_v_chip_specific_extensions.h is for use with PULPissimo RI5CY
  * devices, developed and tested using the Vega board RV32M1RM.
  */
 
@@ -62,7 +62,7 @@
 
 #define portasmHAS_CLINT 0
 
-/* Constants to define the additional registers found on the Pulpino RI5KY. */
+/* Constants to define the additional registers found on the PULPissimo RI5CY. */
 #define lpstart0 	0x7c0
 #define lpend0 		0x7c1
 #define lpcount0 	0x7c2
@@ -76,7 +76,7 @@
 /* Six additional registers to save and restore, as per the #defines above. */
 #define portasmADDITIONAL_CONTEXT_SIZE 6 /* Must be even number on 32-bit cores. */
 
-/* Save additional registers found on the Pulpino. */
+/* Save additional registers found on the PULPissimo. */
 .macro portasmSAVE_ADDITIONAL_REGISTERS
 	addi sp, sp, -(portasmADDITIONAL_CONTEXT_SIZE * portWORD_SIZE) /* Make room for the additional registers. */
 	csrr t0, lpstart0							 /* Load additional registers into accessible temporary registers. */
@@ -93,7 +93,7 @@
 	sw t5, 6 * portWORD_SIZE( sp )
 	.endm
 
-/* Restore the additional registers found on the Pulpino. */
+/* Restore the additional registers found on the PULPissimo. */
 .macro portasmRESTORE_ADDITIONAL_REGISTERS
 	lw t0, 1 * portWORD_SIZE( sp )			/* Load additional registers into accessible temporary registers. */
 	lw t1, 2 * portWORD_SIZE( sp )
